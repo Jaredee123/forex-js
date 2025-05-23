@@ -26,6 +26,14 @@ jobs:
         # lockfileVersion: 3 :contentReference[oaicite:0]{index=0}
         # main entry is index.js :contentReference[oaicite:1]{index=1}
 
+        - name: Debug secrets
+        run: |
+            echo "APP_ID is $APP_ID"
+            echo "SPREADSHEET_TOKEN is $SPREADSHEET_TOKEN"
+        env:
+            APP_ID:            ${{ secrets.APP_ID }}
+            SPREADSHEET_TOKEN: ${{ secrets.SPREADSHEET_TOKEN }}
+
       - name: Set Timezone to GMT+7 and run scripts
         env:
           APP_ID: ${{ secrets.APP_ID }}
