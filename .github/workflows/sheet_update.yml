@@ -20,27 +20,40 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        # use ci for clean install based on package-lock.json
+      - name: Install npm dependencies
         run: npm ci
-        # lockfileVersion: 3 :contentReference[oaicite:0]{index=0}
-        # main entry is index.js :contentReference[oaicite:1]{index=1}
 
-        - name: Debug secrets
+      - name: Install Chromium & sandbox deps
         run: |
-            echo "APP_ID is $APP_ID"
-            echo "SPREADSHEET_TOKEN is $SPREADSHEET_TOKEN"
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser …(etc)…
+
+      - name: Generate secrets.json
+        run: |
+          cat <<EOF > secrets.json
+          {
+            "APP_ID":           "${{ secrets.APP_ID }}",
+            "APP_SECRET":       "${{ secrets.APP_SECRET }}",
+            "SPREADSHEET_TOKEN":"${{ secrets.SPREADSHEET_TOKEN }}"
+          }
+          EOF
+
+      # ← Insert your debug step here
+      - name: Debug secrets
+        run: |
+          echo "APP_ID is $APP_ID"
+          echo "SPREADSHEET_TOKEN is $SPREADSHEET_TOKEN"
         env:
-            APP_ID:            ${{ secrets.APP_ID }}
-            SPREADSHEET_TOKEN: ${{ secrets.SPREADSHEET_TOKEN }}
+          APP_ID:            ${{ secrets.APP_ID }}
+          SPREADSHEET_TOKEN: ${{ secrets.SPREADSHEET_TOKEN }}
 
       - name: Set Timezone to GMT+7 and run scripts
         env:
-          APP_ID: ${{ secrets.APP_ID }}
-          APP_SECRET: ${{ secrets.APP_SECRET }}
-          SPREADSHEET_TOKEN: ${{ secrets.SPREADSHEET_TOKEN }}
-
+          TZ:                 Asia/Jakarta
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          SHEET_ID:           ${{ secrets.SHEET_ID }}
         run: |
-          export TZ=Asia/Jakarta
           date
           node new_index.js
+
+
