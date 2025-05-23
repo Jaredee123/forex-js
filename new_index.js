@@ -1,5 +1,7 @@
 import puppeteer from 'puppeteer';
 
+
+
 const {
   APP_ID,
   APP_SECRET,
@@ -175,7 +177,10 @@ const bank_parser = async (bank) => {
     const config = BANK_CONFIGS[bank.toUpperCase()];
     if (!config) throw new Error(`Unsupported bank: ${bank}`);
     
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: true, args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox'
+    ]});
     const page = await browser.newPage();
     const url = config.url;
     
