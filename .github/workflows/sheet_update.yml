@@ -4,8 +4,9 @@ on:
   push:
   workflow_dispatch:
   schedule:
-    # Runs at 0 minutes past hours 1–4 and 8–11 UTC (Jakarta is UTC+7, so those map to 8–11 AM and 3–7 PM local)
-    - cron: '0 1-4,8-11 * * *'
+    # Runs at 10:00, 17:00, 20:00, 21:00, and 22:00 WIB
+    # which is 03:00, 10:00, 13:00, 14:00, and 15:00 UTC
+    - cron: '0 3,10,13,14,15 * * *'
 
 jobs:
   run-scripts:
@@ -44,16 +45,6 @@ jobs:
             libnss3 \
             lsb-release
 
-      - name: Debug secrets
-        run: |
-          echo "APP_ID            = $APP_ID"
-          echo "APP_SECRET        = $APP_SECRET"
-          echo "SPREADSHEET_TOKEN = $SPREADSHEET_TOKEN"
-        env:
-          APP_ID:            ${{ secrets.APP_ID }}
-          APP_SECRET:        ${{ secrets.APP_SECRET }}
-          SPREADSHEET_TOKEN: ${{ secrets.SPREADSHEET_TOKEN }}
- 
       - name: Set Timezone to GMT+7 and run scripts
         env:
             APP_ID : ${{ secrets.APP_ID }}
