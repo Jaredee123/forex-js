@@ -33,6 +33,12 @@ const BANK_CONFIGS = {
 
 // Get access token for Lark API
 async function getAccessToken() {
+    // DEBUG: print out what you’re about to send
+    console.log('→ LARK_CONFIG', {
+      app_id:     LARK_CONFIG.APP_ID?.slice(0,4) + '…',
+      app_secret: LARK_CONFIG.APP_SECRET?.slice(0,4) + '…'
+    });
+
     try {
         const response = await fetch('https://open.larksuite.com/open-apis/auth/v3/tenant_access_token/internal', {
             method: 'POST',

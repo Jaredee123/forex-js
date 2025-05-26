@@ -44,7 +44,16 @@ jobs:
             libnss3 \
             lsb-release
 
-
+      - name: Debug secrets
+        run: |
+          echo "APP_ID            = $APP_ID"
+          echo "APP_SECRET        = $APP_SECRET"
+          echo "SPREADSHEET_TOKEN = $SPREADSHEET_TOKEN"
+        env:
+          APP_ID:            ${{ secrets.APP_ID }}
+          APP_SECRET:        ${{ secrets.APP_SECRET }}
+          SPREADSHEET_TOKEN: ${{ secrets.SPREADSHEET_TOKEN }}
+ 
       - name: Set Timezone to GMT+7 and run scripts
         env:
             APP_ID : ${{ secrets.APP_ID }}
