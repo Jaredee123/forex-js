@@ -184,8 +184,9 @@ const bank_parser = async (bank) => {
     const page = await browser.newPage();
     const url = config.url;
     
-    await page.goto(url, { waitUntil: "domcontentloaded" });
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
     await page.waitForSelector(config.selector);
+
     
     const usd = await page.evaluate((selector, bankName) => {
         const rows = document.querySelectorAll(selector);
